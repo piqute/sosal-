@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Сосал?</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1c1c1c;
+    font-family: Arial, sans-serif;
+    color: white;
+  }
+
+  #card {
+    background: #2a2a2a;
+    padding: 35px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    width: 90%;
+    max-width: 400px;
+  }
+
+  #buttons {
+    position: relative;
+    height: 180px;
+    margin-top: 20px;
+    overflow: hidden; /* кнопка никогда не выйдет за пределы */
+  }
+
+  button {
+    position: absolute;
+    padding: 14px 25px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+
+    /* фиксированный размер, чтобы НИКОГДА не изменялся */
+    width: 120px;
+    height: 50px;
+  }
+
+  #yes {
+    background: #29c74a;
+    left: 20px;
+    top: 70px;
+  }
+
+  #no {
+    background: #ff4b4b;
+    right: 20px;
+    top: 70px;
+  }
+
+  #message {
+    margin-top: 20px;
+    font-size: 24px;
+    display: none;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="card">
+  <h1>Сосал?</h1>
+
+  <div id="buttons">
+    <button id="yes">Да</button>
+    <button id="no">Нет</button>
+  </div>
+
+  <div id="message">😏 Я так и знал!</div>
+</div>
+
+<script>
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const wrap = document.getElementById("buttons");
+  const message = document.getElementById("message");
+
+  const SAFE = 10;
+
+  // случайное положение
+  function randomPosition() {
+    const r = wrap.getBoundingClientRect();
+    const b = noBtn.getBoundingClientRect();
+
+    const maxX = r.width - b.width - SAFE;
+    const maxY = r.height - b.height - SAFE;
+
+    const x = SAFE + Math.random() * maxX;
+    const y = SAFE + Math.random() * maxY;
+
+    return { x, y };
+  }
+
+  // телепорт по нажатию
+  function teleport(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const pos = randomPosition();
+    noBtn.style.left = pos.x + "px";
+    noBtn.style.top  = pos.y + "px";
+  }
+
+  noBtn.addEventListener("pointerdown", teleport);
+  noBtn.addEventListener("click", (e) => e.preventDefault());
+
+  yesBtn.addEventListener("click", () => {
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+    message.style.display = "block";
+  });
+</script>
+
+</body>
+</html>
